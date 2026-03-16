@@ -100,10 +100,13 @@ const DiscussionDetail = ({ isLoggedIn, userData }) => {
   };
 
   const getFileIcon = (url) => {
-    if (url.match(/\.(jpg|jpeg|png|gif|webp)$/i)) return '🖼️';
-    if (url.match(/\.pdf$/i)) return '📄';
-    if (url.match(/\.(doc|docx)$/i)) return '📝';
-    if (url.match(/\.(xls|xlsx)$/i)) return '📊';
+    // Strip query params before checking extension (Firebase / signed URLs)
+    const cleanUrl = url.split('?')[0];
+
+    if (cleanUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i)) return '🖼️';
+    if (cleanUrl.match(/\.pdf$/i)) return '📄';
+    if (cleanUrl.match(/\.(doc|docx)$/i)) return '📝';
+    if (cleanUrl.match(/\.(xls|xlsx)$/i)) return '📊';
     return '📎';
   };
 
@@ -113,7 +116,9 @@ const DiscussionDetail = ({ isLoggedIn, userData }) => {
   };
 
   const renderFilePreview = (url, index) => {
-    const isImage = url.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+    // Strip query parameters so extensions like ".jpg?alt=media" still count as images
+    const cleanUrl = url.split('?')[0];
+    const isImage = cleanUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
     const filename = url.split('/').pop().split('?')[0];
     const decodedFilename = decodeURIComponent(filename);
 

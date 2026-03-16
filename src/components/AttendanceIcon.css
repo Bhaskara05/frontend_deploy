@@ -12,7 +12,9 @@
   margin: 0;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   padding: 0;
-  animation: lubdub 4.5s ease-in-out infinite;
+  /* Keep stable: avoid pulsing/transform animation that looks like "fluctuation" on touch */
+  animation: none;
+  will-change: transform;
 }
 
 /* Fixed placement (default). Use CSS variables to tune offsets per layout. */
@@ -47,6 +49,14 @@
 /* Optional: subtle hover polish (no animation) */
 .attendance-icon:hover {
   cursor: pointer;
+}
+
+/* If you still want motion, enable it only on desktop hover */
+@media (hover: hover) and (pointer: fine) {
+  .attendance-icon:hover {
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  }
 }
 
 /* Responsive: Desktop/laptop */
@@ -116,7 +126,7 @@
 .attendance-icon *:focus,
 .attendance-icon *:active {
   outline: none !important;
-  box-shadow: none !important;
+  /* Keep box-shadow stable to avoid "jumping" on tap/click */
 }
 
 /* Prevent mobile tap highlight */
